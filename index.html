@@ -4,44 +4,627 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PATI Gold Rush</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a; /* Ngjyra e errët për sfond */
+            color: #f5f5f5; /* Ngjyra e bardhë për tekstin */
         }
         h1 {
-            font-size: 36px;
-            color: gold; /* Ngjyrë e artë për titullin */
-            margin-bottom: 20px;
+            margin: 10px 0; /* Margjina lart dhe poshtë titullit */
+            text-align: center;
+            font-size: 24px; /* Madhësia e titullit */
+            color: #FFD700; /* Ngjyra ari për titujt */
+            transition: color 0.3s; /* Efekti hover */
         }
+        h1:hover {
+            color: #FFEA00; /* Ngjyrë më e lehtë kur kaloni me miun */
+        }
+        /* Konteineri i iframe-it */
         #iframeContainer {
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 1200px; /* Gjerësia maksimale */
+            margin: 20px auto; /* Centron iframe-in */
+            border-radius: 8px; /* Këndet e rrumbullakosura */
+            overflow: hidden; /* Mundëson rrumbullakosjen */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Hije për efekt 3D */
+            background-color: #2c2c2c; /* Ngjyra e errët për sfondin e iframe-it */
+            padding: 20px; /* Mbushja e brendshme */
         }
         iframe {
             width: 100%;
-            height: 320px; /* Lartësia e iframe-it për www.investing.com */
+            border: none; /* Hiq kufirin */
+            border-radius: 4px; /* Këndet e rrumbullakosura për iframe */
+            transition: transform 0.3s; /* Efekti hover */
+        }
+        iframe:hover {
+            transform: scale(1.02); /* Zmadho iframe-in kur kaloni me miun */
+        }
+        /* Stilet për iframe-in e dashboard-it */
+        #dashboardIframe {
+            height: 192px; /* Lartësia për dashboard */
+            margin-top: 20px; /* Margjina për të krijuar hapësirë lart */
+        }
+        /* Stilet për iframe-in e TradingView */
+        #tradingViewIframe {
+            height: 500px; /* Lartësia për TradingView */
+            margin-top: 20px; /* Margjina për të krijuar hapësirë lart */
+        }
+        /* Stilet për iframe-in e kalendarit ekonomik */
+        #economicCalendarIframe {
+            height: 900px; /* Rritur lartësia për kalendarin ekonomik */
+            margin-top: 20px; /* Margjina për të krijuar hapësirë lart */
+        }
+
+        /* Stilet për input-in e indeksit të USD */
+        #usdIndexContainer {
+            margin-top: 10px; /* Vendos hapësirë mbi div-in */
+            text-align: center;
+            font-size: 14px; /* Madhësia e tekstit për indeksin */
+            color: #FFD700; /* Ngjyra ari për tekstin */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        input[type="text"] {
+            padding: 3px;
+            font-size: 12px;
             border: none;
-            margin-bottom: 20px; /* Hapesirë midis iframe-ve */
+            border-radius: 4px;
+            margin-right: 5px;
+            width: 100px;
+        }
+        button {
+            padding: 3px 8px;
+            font-size: 12px;
+            background-color: #FFD700;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #FFEA00;
+        }
+        /* Stilet për notepad */
+        #notepadContainer {
+            margin-top: 20px; /* Vendos hapësirë mbi div-in */
+            text-align: center;
+            font-size: 16px; /* Madhësia e tekstit për titullin e notepad-it */
+            color: #FFD700; /* Ngjyra ari për tekstin */
+        }
+        textarea {
+            width: 100%;
+            height: 900px; /* E njëjta lartësi si kalendari ekonomik */
+            padding: 10px;
+            font-size: 14px;
+            background-color: #2c2c2c;
+            color: #f5f5f5;
+            border: none;
+            border-radius: 4px;
+            resize: none; /* Heq mundësinë për të ndryshuar madhësinë e notepad-it */
         }
     </style>
 </head>
 <body>
-
     <h1>PATI Gold Rush</h1>
-
     <div id="iframeContainer">
-        <h2>Forex Dashboard</h2>
-        <iframe src="https://invesery.com/dashboard/forex/cs"></iframe>
-        
-        <h2>USD Index in Real Time (DXY)</h2>
-        <iframe src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_5ca01&symbol=TVC%3ADXY&interval=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=&theme=light&style=1&timezone=Etc%2FUTC&withdateranges=1&allow_symbol_change=1&hideideas=1&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=www.example.com&utm_medium=widget&utm_campaign=chart&utm_term=TVC%3ADXY" allowfullscreen></iframe>
+        <!-- Iframe për dashboardin -->
+        <iframe id="dashboardIframe" src="https://invesery.com/dashboard/forex/cs"></iframe>
 
-        <h2>Economic Calendar</h2>
-        <iframe src="https://www.investing.com/economic-calendar/"></iframe>
+        <!-- Div për shënimin manual të indeksit USD -->
+        <div id="usdIndexContainer">
+            <p>Indeksi USD:</p>
+            <input type="text" id="usdIndexInput" placeholder="Shkruaj vlerën">
+            <button onclick="saveUSDIndex()">Ruaj</button>
+            <p>Vlera e fundit: <span id="savedUSDIndex">N/A</span></p>
+        </div>
+
+        <!-- Iframe për TradingView -->
+        <iframe id="tradingViewIframe" src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_5ca01&symbol=TVC%3ADXY&interval=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=&theme=light&style=1&timezone=Etc%2FUTC&withdateranges=1&allow_symbol_change=1&hideideas=1&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=www.example.com&utm_medium=widget&utm_campaign=chart&utm_term=TVC%3ADXY"></iframe>
+        
+        <!-- Iframe për kalendarin ekonomik -->
+        <iframe id="economicCalendarIframe" src="https://www.investing.com/economic-calendar/"></iframe>
+
+        <!-- Notepad në fund të faqes -->
+        <div id="notepadContainer">
+            <h2>Notepad</h2>
+            <textarea id="notepad" placeholder="Shkruaj shënimet e tua këtu..."></textarea>
+        </div>
+    </div>
+    
+    <script>
+        // Funksioni për të ruajtur indeksin manualisht
+        function saveUSDIndex() {
+            const usdIndex = document.getElementById('usdIndexInput').value; // Merr vlerën nga input-i
+            if (usdIndex) {
+                document.getElementById('savedUSDIndex').textContent = usdIndex; // Shfaq vlerën e ruajtur
+                document.getElementById('usdIndexInput').value = ''; // Pastro fushën e input-it pas ruajtjes
+            } else {
+                alert('Ju lutemi shënoni një vlerë të indeksit USD!'); // Tregon një alert nëse input-i është bosh
+            }
+        }
+    </script>
+</body>
+</html>  shiko a ka diqka tjeter per te shtuar ketu ndonje detaj mua me duket perfekte 
+ChatGPT said:
+ChatGPT
+Kodi yt për faqen e "PATI Gold Rush" duket shumë i mirë! Ja disa sugjerime dhe detaje që mund të shtosh për ta bërë faqen edhe më funksionale dhe tërheqëse:
+
+Grafiku i Historikut të Çmimeve:
+
+Mund të shtosh një iframe për një grafik historik të çmimeve të arit. Kjo do t'i ndihmojë tregtarët të analizojnë trendet historike.
+html
+Copy code
+<!-- Iframe për grafik historik -->
+<iframe id="historicalChartIframe" src="https://www.tradingview.com/chart/?symbol=XAUUSD"></iframe>
+Seksioni i Lajmeve:
+
+Një seksion për lajme të fundit ose analisa të tregut që mund të ndihmojnë në vendimmarrje.
+html
+Copy code
+<div id="newsContainer">
+    <h2>Lajmet e Fundit</h2>
+    <p id="newsContent">Mund të vendosni disa lajme të fundit këtu.</p>
+</div>
+Blloku i Ndihmës:
+
+Një seksion ndihmës me këshilla për fillestarët ose një përmbledhje të strategjive të suksesit në tregtim.
+html
+Copy code
+<div id="helpBlock">
+    <h2>Këshilla për Tregtarët</h2>
+    <p>1. Keni një strategji të qartë dhe qëndroni pranë saj.</p>
+    <p>2. Monitoroni gjithmonë tregun dhe lajmet financiare.</p>
+    <p>3. Ruani disiplinën dhe menaxhimin e rrezikut.</p>
+</div>
+Ndërlidhje me Burime të Tjera:
+
+Ofroni lidhje për burime të tjera, si libra ose artikuj të dobishëm për tregtarët.
+html
+Copy code
+<div id="resourcesContainer">
+    <h2>Burime të Dobishme</h2>
+    <ul>
+        <li><a href="https://www.investopedia.com/" target="_blank">Investopedia</a></li>
+        <li><a href="https://www.fxstreet.com/" target="_blank">FXStreet</a></li>
+        <li><a href="https://www.dailyfx.com/" target="_blank">DailyFX</a></li>
+    </ul>
+</div>
+Ekran i Rregullt:
+
+Përdor një media query për të optimizuar pamjen e faqes në pajisje mobile.
+css
+Copy code
+@media (max-width: 600px) {
+    body {
+        padding: 10px; /* Redukton mbushjen në pajisje të vogla */
+    }
+    h1 {
+        font-size: 20px; /* Redukton madhësinë e titullit */
+    }
+}
+Modal për Informacione Shtesë:
+
+Shto një modal për informacione të detajuara mbi strategjitë e tregtimit, rrezikun dhe menaxhimin e kapitalit.
+html
+Copy code
+<!-- Modal për informacione -->
+<div id="infoModal" style="display:none;">
+    <h2>Informacione Shtesë</h2>
+    <p>Detaje të tjera mbi strategjitë dhe rrezikun e tregtimit mund të futen këtu.</p>
+    <button onclick="document.getElementById('infoModal').style.display='none'">Mbyll</button>
+</div>
+Përmbledhje
+Këto janë disa sugjerime për të pasuruar faqen tënde dhe për ta bërë atë më tërheqëse dhe funksionale. Sigurohu që çdo element që shton të jetë në përputhje me qëllimet e faqes dhe të ofrojë vlera të dobishme për përdoruesit.
+
+Nëse ke ndonjë pyetje të mëtejshme ose dëshiron të diskutosh më shumë detaje, më njofto!
+
+
+
+
+
+
+You said:
+at her shtoj tek tek ky koh pooo pa ndryshuar strukturen e dashbordit charitit kalendarit dhe notepadit 
+ChatGPT said:
+ChatGPT
+Ja një version i përmirësuar i kodit të faqes "PATI Gold Rush" me disa nga elementet e sugjeruara, pa ndikuar në strukturën ekzistuese të dashboard-it, grafikëve, kalendarit ekonomik dhe notepad-it. Kam shtuar grafik historik, seksion lajmesh, bllok ndihme dhe burime të dobishme. Mund të rregullosh përmbajtjen sipas nevojave të tua.
+
+html
+Copy code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PATI Gold Rush</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a; /* Ngjyra e errët për sfond */
+            color: #f5f5f5; /* Ngjyra e bardhë për tekstin */
+        }
+        h1 {
+            margin: 10px 0; /* Margjina lart dhe poshtë titullit */
+            text-align: center;
+            font-size: 24px; /* Madhësia e titullit */
+            color: #FFD700; /* Ngjyra ari për titujt */
+            transition: color 0.3s; /* Efekti hover */
+        }
+        h1:hover {
+            color: #FFEA00; /* Ngjyrë më e lehtë kur kaloni me miun */
+        }
+        /* Konteineri i iframe-it */
+        #iframeContainer {
+            max-width: 1200px; /* Gjerësia maksimale */
+            margin: 20px auto; /* Centron iframe-in */
+            border-radius: 8px; /* Këndet e rrumbullakosura */
+            overflow: hidden; /* Mundëson rrumbullakosjen */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Hije për efekt 3D */
+            background-color: #2c2c2c; /* Ngjyra e errët për sfondin e iframe-it */
+            padding: 20px; /* Mbushja e brendshme */
+        }
+        iframe {
+            width: 100%;
+            border: none; /* Hiq kufirin */
+            border-radius: 4px; /* Këndet e rrumbullakosura për iframe */
+            transition: transform 0.3s; /* Efekti hover */
+        }
+        iframe:hover {
+            transform: scale(1.02); /* Zmadho iframe-in kur kaloni me miun */
+        }
+        /* Stilet për iframe-in e dashboard-it */
+        #dashboardIframe {
+            height: 192px; /* Lartësia për dashboard */
+            margin-top: 20px; /* Margjina për të krijuar hapësirë lart */
+        }
+        /* Stilet për iframe-in e TradingView */
+        #tradingViewIframe {
+            height: 500px; /* Lartësia për TradingView */
+            margin-top: 20px; /* Margjina për të krijuar hapësirë lart */
+        }
+        /* Stilet për iframe-in e kalendarit ekonomik */
+        #economicCalendarIframe {
+            height: 900px; /* Rritur lartësia për kalendarin ekonomik */
+            margin-top: 20px; /* Margjina për të krijuar hapësirë lart */
+        }
+        /* Stilet për input-in e indeksit të USD */
+        #usdIndexContainer {
+            margin-top: 10px; /* Vendos hapësirë mbi div-in */
+            text-align: center;
+            font-size: 14px; /* Madhësia e tekstit për indeksin */
+            color: #FFD700; /* Ngjyra ari për tekstin */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        input[type="text"] {
+            padding: 3px;
+            font-size: 12px;
+            border: none;
+            border-radius: 4px;
+            margin-right: 5px;
+            width: 100px;
+        }
+        button {
+            padding: 3px 8px;
+            font-size: 12px;
+            background-color: #FFD700;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #FFEA00;
+        }
+        /* Stilet për notepad */
+        #notepadContainer {
+            margin-top: 20px; /* Vendos hapësirë mbi div-in */
+            text-align: center;
+            font-size: 16px; /* Madhësia e tekstit për titullin e notepad-it */
+            color: #FFD700; /* Ngjyra ari për tekstin */
+        }
+        textarea {
+            width: 100%;
+            height: 900px; /* E njëjta lartësi si kalendari ekonomik */
+            padding: 10px;
+            font-size: 14px;
+            background-color: #2c2c2c;
+            color: #f5f5f5;
+            border: none;
+            border-radius: 4px;
+            resize: none; /* Heq mundësinë për të ndryshuar madhësinë e notepad-it */
+        }
+        /* Stilet për seksionet e reja */
+        #historicalChartIframe, #newsContainer, #helpBlock, #resourcesContainer {
+            margin-top: 20px; /* Vendos hapësirë mbi div-in */
+            color: #FFD700; /* Ngjyra ari për tekstin */
+        }
+        #newsContainer, #helpBlock, #resourcesContainer {
+            background-color: #2c2c2c; /* Ngjyra e errët për sfondin */
+            padding: 10px;
+            border-radius: 4px;
+        }
+        #resourcesContainer ul {
+            list-style-type: none; /* Hiq piketat nga lista */
+            padding: 0; /* Hiq mbushjen nga lista */
+        }
+        #resourcesContainer a {
+            color: #FFD700; /* Ngjyra ari për lidhjet */
+        }
+        #resourcesContainer a:hover {
+            color: #FFEA00; /* Ngjyrë më e lehtë kur kaloni me miun */
+        }
+    </style>
+</head>
+<body>
+    <h1>PATI Gold Rush</h1>
+    <div id="iframeContainer">
+        <!-- Iframe për dashboardin -->
+        <iframe id="dashboardIframe" src="https://invesery.com/dashboard/forex/cs"></iframe>
+
+        <!-- Div për shënimin manual të indeksit USD -->
+        <div id="usdIndexContainer">
+            <p>Indeksi USD:</p>
+            <input type="text" id="usdIndexInput" placeholder="Shkruaj vlerën">
+            <button onclick="saveUSDIndex()">Ruaj</button>
+            <p>Vlera e fundit: <span id="savedUSDIndex">N/A</span></p>
+        </div>
+
+        <!-- Iframe për TradingView -->
+        <iframe id="tradingViewIframe" src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_5ca01&symbol=TVC%3ADXY&interval=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=&theme=light&style=1&timezone=Etc%2FUTC&withdateranges=1&allow_symbol_change=1&hideideas=1&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=www.example.com&utm_medium=widget&utm_campaign=chart&utm_term=TVC%3ADXY"></iframe>
+        
+        <!-- Iframe për kalendarin ekonomik -->
+        <iframe id="economicCalendarIframe" src="https://www.investing.com/economic-calendar/"></iframe>
+
+        <!-- Iframe për grafik historik -->
+        <iframe id="historicalChartIframe" src="https://www.tradingview.com/chart/?symbol=XAUUSD"></iframe>
+
+        <!-- Seksioni i lajmeve -->
+        <div id="newsContainer">
+            <h2>Lajmet e Fundit</h2>
+            <p id="newsContent">Mund të vendosni disa lajme të fundit këtu.</p>
+        </div>
+
+        <!-- Blloku i ndihmës -->
+        <div id="helpBlock">
+            <h2>Këshilla për Tregtarët</h2>
+            <p>1. Keni një strategji të qartë dhe qëndroni pranë saj.</p>
+            <p>2. Monitoroni gjithmonë tregun dhe lajmet financiare.</p>
+            <p>3. Ruani disiplinën dhe menaxhimin e rrezikut.</p>
+        </div>
+
+        <!-- Burime të dobishme -->
+        <div id="resourcesContainer">
+            <h2>Burime të Dobishme</h2>
+            <ul>
+                <li><a href="https://www.investopedia.com/" target="_blank">Investopedia</a></li>
+                <li><a href="https://www.fxstreet.com/" target="_blank">FXStreet</a></li>
+                <li><a href="https://www.dailyfx.com/" target="_blank">DailyFX</a></li>
+            </ul>
+        </div>
+
+        <!-- Notepad -->
+        <div id="notepadContainer">
+            <h2>Notepad</h2>
+            <textarea id="notepad" placeholder="Shkruani shënimet tuaja këtu..."></textarea>
+        </div>
     </div>
 
+    <script>
+        // Ruaj vlerën e indeksit USD
+        function saveUSDIndex() {
+            const usdIndexValue = document.getElementById('usdIndexInput').value;
+            document.getElementById('savedUSDIndex').innerText = usdIndexValue;
+        }
+    </script>
 </body>
 </html>
+Shpjegimi i Shtesave
+Grafiku Historik: Iframe për grafik historik të çmimeve të arit është shtuar pas dashboard-it.
+Seksioni i Lajmeve: Një div i ri me titullin "Lajmet e Fundit" ku mund të vendosni përmbajtjen e lajmeve.
+Blloku i Ndihmës: Këshilla të përgjithshme për tregtarët janë të shtuar.
+Burimet e Dobishme: Një listë e burimeve të dobishme për tregtarët është e përfshirë.
+Stilet: Të gjitha stilet janë optimizuar për të siguruar një pamje të mirë dhe të përmirësuar.
+Si të Përdorësh
+Mund të ngarkosh këtë kod në faqen tënde dhe të modifikosh përmbajtjen sipas dëshirës. Nëse ke ndonjë pyetje ose nevojë për ndihmë shtesë, mos nguro të më pyesësh!
+
+
+
+
+
+
+You said:
+ largo rubriken lajmet e fundit dhe rubriken e tradinviwe pran ksaj te fundit 
+ChatGPT said:
+ChatGPT
+Ja kodi i përmirësuar i faqes "PATI Gold Rush" pa rubrikën "Lajmet e Fundit" dhe rubrikën e TradingView-it. Kam ruajtur të gjitha seksionet e tjera dhe kam organizuar kodin siç duhet:
+
+html
+Copy code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PATI Gold Rush</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a; /* Ngjyra e errët për sfond */
+            color: #f5f5f5; /* Ngjyra e bardhë për tekstin */
+        }
+        h1 {
+            margin: 10px 0; /* Margjina lart dhe poshtë titullit */
+            text-align: center;
+            font-size: 24px; /* Madhësia e titullit */
+            color: #FFD700; /* Ngjyra ari për titujt */
+            transition: color 0.3s; /* Efekti hover */
+        }
+        h1:hover {
+            color: #FFEA00; /* Ngjyrë më e lehtë kur kaloni me miun */
+        }
+        /* Konteineri i iframe-it */
+        #iframeContainer {
+            max-width: 1200px; /* Gjerësia maksimale */
+            margin: 20px auto; /* Centron iframe-in */
+            border-radius: 8px; /* Këndet e rrumbullakosura */
+            overflow: hidden; /* Mundëson rrumbullakosjen */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Hije për efekt 3D */
+            background-color: #2c2c2c; /* Ngjyra e errët për sfondin e iframe-it */
+            padding: 20px; /* Mbushja e brendshme */
+        }
+        iframe {
+            width: 100%;
+            border: none; /* Hiq kufirin */
+            border-radius: 4px; /* Këndet e rrumbullakosura për iframe */
+            transition: transform 0.3s; /* Efekti hover */
+        }
+        iframe:hover {
+            transform: scale(1.02); /* Zmadho iframe-in kur kaloni me miun */
+        }
+        /* Stilet për iframe-in e dashboard-it */
+        #dashboardIframe {
+            height: 192px; /* Lartësia për dashboard */
+            margin-top: 20px; /* Margjina për të krijuar hapësirë lart */
+        }
+        /* Stilet për iframe-in e kalendarit ekonomik */
+        #economicCalendarIframe {
+            height: 900px; /* Rritur lartësia për kalendarin ekonomik */
+            margin-top: 20px; /* Margjina për të krijuar hapësirë lart */
+        }
+        /* Stilet për input-in e indeksit të USD */
+        #usdIndexContainer {
+            margin-top: 10px; /* Vendos hapësirë mbi div-in */
+            text-align: center;
+            font-size: 14px; /* Madhësia e tekstit për indeksin */
+            color: #FFD700; /* Ngjyra ari për tekstin */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        input[type="text"] {
+            padding: 3px;
+            font-size: 12px;
+            border: none;
+            border-radius: 4px;
+            margin-right: 5px;
+            width: 100px;
+        }
+        button {
+            padding: 3px 8px;
+            font-size: 12px;
+            background-color: #FFD700;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #FFEA00;
+        }
+        /* Stilet për notepad */
+        #notepadContainer {
+            margin-top: 20px; /* Vendos hapësirë mbi div-in */
+            text-align: center;
+            font-size: 16px; /* Madhësia e tekstit për titullin e notepad-it */
+            color: #FFD700; /* Ngjyra ari për tekstin */
+        }
+        textarea {
+            width: 100%;
+            height: 900px; /* E njëjta lartësi si kalendari ekonomik */
+            padding: 10px;
+            font-size: 14px;
+            background-color: #2c2c2c;
+            color: #f5f5f5;
+            border: none;
+            border-radius: 4px;
+            resize: none; /* Heq mundësinë për të ndryshuar madhësinë e notepad-it */
+        }
+        /* Stilet për seksionet e reja */
+        #historicalChartIframe, #helpBlock, #resourcesContainer {
+            margin-top: 20px; /* Vendos hapësirë mbi div-in */
+            color: #FFD700; /* Ngjyra ari për tekstin */
+        }
+        #helpBlock, #resourcesContainer {
+            background-color: #2c2c2c; /* Ngjyra e errët për sfondin */
+            padding: 10px;
+            border-radius: 4px;
+        }
+        #resourcesContainer ul {
+            list-style-type: none; /* Hiq piketat nga lista */
+            padding: 0; /* Hiq mbushjen nga lista */
+        }
+        #resourcesContainer a {
+            color: #FFD700; /* Ngjyra ari për lidhjet */
+        }
+        #resourcesContainer a:hover {
+            color: #FFEA00; /* Ngjyrë më e lehtë kur kaloni me miun */
+        }
+    </style>
+</head>
+<body>
+    <h1>PATI Gold Rush</h1>
+    <div id="iframeContainer">
+        <!-- Iframe për dashboardin -->
+        <iframe id="dashboardIframe" src="https://invesery.com/dashboard/forex/cs"></iframe>
+
+        <!-- Div për shënimin manual të indeksit USD -->
+        <div id="usdIndexContainer">
+            <p>Indeksi USD:</p>
+            <input type="text" id="usdIndexInput" placeholder="Shkruaj vlerën">
+            <button onclick="saveUSDIndex()">Ruaj</button>
+            <p>Vlera e fundit: <span id="savedUSDIndex">N/A</span></p>
+        </div>
+
+        <!-- Iframe për kalendarin ekonomik -->
+        <iframe id="economicCalendarIframe" src="https://www.investing.com/economic-calendar/"></iframe>
+
+        <!-- Iframe për grafik historik -->
+        <iframe id="historicalChartIframe" src="https://www.tradingview.com/chart/?symbol=XAUUSD"></iframe>
+
+        <!-- Blloku i ndihmës -->
+        <div id="helpBlock">
+            <h2>Këshilla për Tregtarët</h2>
+            <p>1. Keni një strategji të qartë dhe qëndroni pranë saj.</p>
+            <p>2. Monitoroni gjithmonë tregun dhe lajmet financiare.</p>
+            <p>3. Ruani disiplinën dhe menaxhimin e rrezikut.</p>
+        </div>
+
+        <!-- Burime të dobishme -->
+        <div id="resourcesContainer">
+            <h2>Burime të Dobishme</h2>
+            <ul>
+                <li><a href="https://www.investopedia.com/" target="_blank">Investopedia</a></li>
+                <li><a href="https://www.fxstreet.com/" target="_blank">FXStreet</a></li>
+                <li><a href="https://www.dailyfx.com/" target="_blank">DailyFX</a></li>
+            </ul>
+        </div>
+
+        <!-- Notepad -->
+        <div id="notepadContainer">
+            <h2>Notepad</h2>
+            <textarea id="notepad" placeholder="Shkruani shënimet tuaja këtu..."></textarea>
+        </div>
+    </div>
+
+    <script>
+        // Ruaj vlerën e indeksit USD
+        function saveUSDIndex() {
+            const usdIndexValue = document.getElementById('usdIndexInput').value;
+            document.getElementById('savedUSDIndex').innerText = usdIndexValue;
+        }
+    </script>
+</body>
+</html>
+
